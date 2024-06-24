@@ -1,11 +1,11 @@
 package com.example.demo.product.CommandHandlers;
 
 import com.example.demo.Command;
+import com.example.demo.category.Category;
 import com.example.demo.product.Model.Product;
 import com.example.demo.product.Model.UpdateProductCommand;
 import com.example.demo.product.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +19,7 @@ public class UpdateProductCommandHandler implements Command<UpdateProductCommand
 
 
     @Override
-    @CacheEvict(value = "productCache",allEntries = true)
+
     public ResponseEntity execute(UpdateProductCommand command) {
         Product productDetails = command.getProduct();
         String id = command.getId();
@@ -33,6 +33,7 @@ public class UpdateProductCommandHandler implements Command<UpdateProductCommand
         product.setPrice(productDetails.getPrice());
         product.setManufacturer(productDetails.getManufacturer());
         product.setRegion(productDetails.getRegion());
+        product.setCategory(new Category(productDetails.getCategory().getName()));
         productRepository.save(product);
         return ResponseEntity.ok().build();
     }

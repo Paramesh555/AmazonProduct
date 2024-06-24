@@ -5,14 +5,14 @@ import lombok.Getter;
 @Getter
 public class GetProductsQuery {
     private Region region;
-    private String Category;
+    private String category;
     private String nameOrDescription;
     private ProductSortBy productSortBy;
 
-    public GetProductsQuery(Region region, String category, ProductSortBy productSortBy, String nameOrDescription) {
+    public GetProductsQuery(Region region, String category,String nameOrDescription,ProductSortBy productSortBy) {
         this.region = region;
-        Category = category;
-        this.productSortBy = productSortBy;
+        this.category = category;
         this.nameOrDescription = nameOrDescription;
+        this.productSortBy = productSortBy;
     }
 }

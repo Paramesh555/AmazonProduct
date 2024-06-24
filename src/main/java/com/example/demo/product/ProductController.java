@@ -3,12 +3,11 @@ package com.example.demo.product;
 import com.example.demo.product.CommandHandlers.CreateProductCommandHandler;
 import com.example.demo.product.CommandHandlers.DeleteProductCommandHandler;
 import com.example.demo.product.CommandHandlers.UpdateProductCommandHandler;
-import com.example.demo.product.Model.Product;
-import com.example.demo.product.Model.ProductDTO;
-import com.example.demo.product.Model.UpdateProductCommand;
+import com.example.demo.product.Model.*;
 import com.example.demo.product.QueryHandlers.GetProductByIdQueryHandler;
 import com.example.demo.product.QueryHandlers.GetProductsQueryHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,20 +45,25 @@ public class ProductController {
         return createProductCommandHandler.execute(product);
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<List<Product>> getProduct(@RequestParam(value = "descriptionOrName") String val){
-        return ResponseEntity.ok(productRepository.customQueryMethod(val));
-    }
+
 
     @GetMapping
-    public ResponseEntity<List<ProductDTO>> getAllProducts(){
-        return getProductsQueryHandler.execute(null);
+    @Cacheable("products")
+    public ResponseEntity<List<ProductDTO>> getProducts(
+            @RequestHeader(value = "region",defaultValue = "US") String region,
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) String nameOrDescription,
+            @RequestParam(required = false) String orderBy
+    ){
+        return getProductsQueryHandler.execute(new GetProductsQuery(
+                Region.valueOf(region),
+                category,
+                nameOrDescription,
+                ProductSortBy.fromValue(orderBy)
+            ));
     }
 
-    @GetMapping("/searchByCategory")
-    public ResponseEntity<List<Product>> getProductBYCategory(@RequestParam(value = "category") String category){
-        return ResponseEntity.ok(productRepository.getProductsByCategory(category));
-    }
+
 
     @PutMapping("/{id}")
     public ResponseEntity updateProduct(@PathVariable String id,@RequestBody Product product){

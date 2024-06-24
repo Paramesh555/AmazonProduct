@@ -18,4 +18,8 @@ public enum ProductSortBy {
         }
         return null;
     }
+
+    public String getValue(){
+       return this.value;
+    }
 }
