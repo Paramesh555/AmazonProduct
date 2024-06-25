@@ -5,10 +5,10 @@ import lombok.Data;
 @Data
 public class UpdateProductCommand {
     private String id;
-    private Product product;
+    private ProductRequest request;
 
-    public UpdateProductCommand(String id, Product product) {
-        this.product = product;
+    public UpdateProductCommand(String id, ProductRequest request) {
+        this.request = request;
         this.id = id;
     }
 }

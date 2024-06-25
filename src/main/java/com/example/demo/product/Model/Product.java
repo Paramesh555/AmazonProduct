@@ -45,4 +45,16 @@ public class Product {
     @Column(name = "manufacturer")
     private String manufacturer;
 
+    public Product() {
+    }
+
+    public Product(ProductRequest request){
+        this.name = request.getName();
+        this.description = request.getDescription();
+        this.price = request.getPrice();
+        this.manufacturer = request.getManufacturer();
+        this.category = new Category(request.getCategory());
+        this.region = Region.valueOf(request.getRegion());
+    }
+
 }

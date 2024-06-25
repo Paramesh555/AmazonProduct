@@ -41,8 +41,8 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity createPost(@RequestBody Product product){
-        return createProductCommandHandler.execute(product);
+    public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductRequest request){
+        return createProductCommandHandler.execute(request);
     }
 
 
@@ -66,8 +66,8 @@ public class ProductController {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity updateProduct(@PathVariable String id,@RequestBody Product product){
-        UpdateProductCommand command = new UpdateProductCommand(id,product);
+    public ResponseEntity<ProductDTO> updateProduct(@PathVariable String id,@RequestBody ProductRequest request){
+        UpdateProductCommand command = new UpdateProductCommand(id,request);
         return updateProductCommandHandler.execute(command);
     }
 
