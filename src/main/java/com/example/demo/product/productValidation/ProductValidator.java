@@ -65,7 +65,7 @@ public class ProductValidator {
     }
 
     private static boolean nameIsEmpty(String name) {
-            return name.isEmpty();
+            return name == null || name.isEmpty();
     }
 
 }
